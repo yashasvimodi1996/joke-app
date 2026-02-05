@@ -156,12 +156,70 @@
       border-radius: 20px;
       margin-bottom: 18px;
     }
+
+    .category-filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 700px;
+    }
+
+    .category-btn {
+      border: 2px solid #0f3460;
+      border-radius: 25px;
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: transparent;
+      color: #7ab;
+      text-transform: capitalize;
+      box-shadow: none;
+    }
+
+    .category-btn:hover {
+      border-color: #e94560;
+      color: #e94560;
+    }
+
+    .category-btn.active {
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      border-color: #e94560;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(233, 69, 96, 0.4);
+    }
+
+    .category-btn:active {
+      transform: scale(0.95);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Joke Machine</h1>
-  <p class="subtitle">A fresh joke, on demand</p>
+  <div class="container">
+    <h1>Joke Machine</h1>
+    <p class="subtitle">A fresh joke, on demand</p>
+
+    <div class="category-filters">
+      <button class="category-btn active" onclick="filterCategory('all')">All</button>
+      <button class="category-btn" onclick="filterCategory('adult')">Adult</button>
+      <button class="category-btn" onclick="filterCategory('sports')">Sports</button>
+      <button class="category-btn" onclick="filterCategory('science')">Science</button>
+      <button class="category-btn" onclick="filterCategory('fashion')">Fashion</button>
+      <button class="category-btn" onclick="filterCategory('trivia')">Trivia</button>
+      <button class="category-btn" onclick="filterCategory('politics')">Politics</button>
+    </div>
+  </div>
 
   <div class="card">
     <span class="counter" id="counter">1 / 10</span>
@@ -176,23 +234,91 @@
   </div>
 
   <script>
-    const jokes = [
-      { setup: "Why don't scientists trust atoms?", punchline: "Because they make up everything!", category: "Science" },
-      { setup: "I told my wife she was drawing her eyebrows too high.", punchline: "She looked surprised.", category: "Classic" },
-      { setup: "What do you call a fake noodle?", punchline: "An impasta.", category: "Food" },
-      { setup: "Why did the scarecrow win an award?", punchline: "He was outstanding in his field.", category: "Classic" },
-      { setup: "I used to hate facial hair, but then it grew on me.", punchline: "Literally.", category: "Classic" },
-      { setup: "What do you call a bear with no teeth?", punchline: "A gummy bear.", category: "Animals" },
-      { setup: "Why do programmers prefer dark mode?", punchline: "Because light attracts bugs.", category: "Tech" },
-      { setup: "What did the ocean say to the beach?", punchline: "Nothing, it just waved.", category: "Nature" },
-      { setup: "Why don't eggs tell jokes?", punchline: "They'd crack each other up.", category: "Food" },
-      { setup: "I'm reading a book about anti-gravity.", punchline: "It's impossible to put down.", category: "Science" }
-    ];
+    const allJokes = {
+      all: [
+        { setup: "Why don't scientists trust atoms?", punchline: "Because they make up everything!", category: "Science" },
+        { setup: "I told my wife she was drawing her eyebrows too high.", punchline: "She looked surprised.", category: "Classic" },
+        { setup: "What do you call a fake noodle?", punchline: "An impasta.", category: "Food" },
+        { setup: "Why did the scarecrow win an award?", punchline: "He was outstanding in his field.", category: "Classic" },
+        { setup: "I used to hate facial hair, but then it grew on me.", punchline: "Literally.", category: "Classic" },
+        { setup: "What do you call a bear with no teeth?", punchline: "A gummy bear.", category: "Animals" },
+        { setup: "Why do programmers prefer dark mode?", punchline: "Because light attracts bugs.", category: "Tech" },
+        { setup: "What did the ocean say to the beach?", punchline: "Nothing, it just waved.", category: "Nature" },
+        { setup: "Why don't eggs tell jokes?", punchline: "They'd crack each other up.", category: "Food" },
+        { setup: "I'm reading a book about anti-gravity.", punchline: "It's impossible to put down.", category: "Science" }
+      ],
+      adult: [
+        { setup: "My wife told me to take the spider out instead of killing it.", punchline: "We went and had some drinks. Cool guy. Wants to be a web developer.", category: "Adult" },
+        { setup: "What's the difference between a tire and 365 used condoms?", punchline: "One's a Goodyear, the other's a great year.", category: "Adult" },
+        { setup: "Why did the dildo go to therapy?", punchline: "It had too many issues to work through.", category: "Adult" },
+        { setup: "What do you call a hooker in Finland?", punchline: "A fisherman.", category: "Adult" },
+        { setup: "I'm reading a book about anti-gravity and aphrodisiacs.", punchline: "I can't put it down, and I keep getting up.", category: "Adult" }
+      ],
+      sports: [
+        { setup: "Why did the football go to the bank?", punchline: "To get its quarterback!", category: "Sports" },
+        { setup: "What do you call a sports announcer with no teeth?", punchline: "A gummy commentator.", category: "Sports" },
+        { setup: "Why did the tennis player go to jail?", punchline: "Because he broke the court!", category: "Sports" },
+        { setup: "What do Olympic sprinters eat before a race?", punchline: "Nothing, they prefer to fast.", category: "Sports" },
+        { setup: "Why do basketball players go on vacation?", punchline: "They need to escape the court!", category: "Sports" }
+      ],
+      science: [
+        { setup: "Why don't scientists trust atoms?", punchline: "Because they make up everything!", category: "Science" },
+        { setup: "Did you hear about the man who got cooled to absolute zero?", punchline: "He's 0K now.", category: "Science" },
+        { setup: "What did the biologist say before the date?", punchline: "You must be a because I'm feeling a strong chemistryy between us.", category: "Science" },
+        { setup: "Entropy isn't what it used to be.", punchline: "Actually, it's been increasing the whole time.", category: "Science" },
+        { setup: "Why did the physics teacher break up with the biology teacher?", punchline: "There was no chemistry.", category: "Science" }
+      ],
+      fashion: [
+        { setup: "Why did the fashion designer go to jail?", punchline: "Because he was stitching people up!", category: "Fashion" },
+        { setup: "What do you call a fashionable river?", punchline: "A trendy stream.", category: "Fashion" },
+        { setup: "Why did the model break up with her boyfriend?", punchline: "He wasn't her type.", category: "Fashion" },
+        { setup: "What's a fashion designer's favorite type of music?", punchline: "Thread metal.", category: "Fashion" },
+        { setup: "Why do fashionistas never get cold?", punchline: "They're always in style.", category: "Fashion" }
+      ],
+      trivia: [
+        { setup: "What did one wall say to the other wall?", punchline: "I'll meet you at the corner.", category: "Trivia" },
+        { setup: "How does a penguin build its house?", punchline: "Igloos it together.", category: "Trivia" },
+        { setup: "What's the best thing about Switzerland?", punchline: "I don't know, but the flag is a big plus.", category: "Trivia" },
+        { setup: "Why don't secrets last long in a kitchen?", punchline: "Because the potatoes have eyes, the corn has ears, and the beans stalk.", category: "Trivia" },
+        { setup: "How do you organize a space party?", punchline: "You planet.", category: "Trivia" }
+      ],
+      politics: [
+        { setup: "Why did the politician go to the baseball game?", punchline: "He heard someone had stolen a base.", category: "Politics" },
+        { setup: "What do you call a politician who's lost in the wood?", punchline: "Lost.", category: "Politics" },
+        { setup: "How many politicians does it take to change a lightbulb?", punchline: "Three. One to change it and two to discuss how much better the old one was.", category: "Politics" },
+        { setup: "Why do politicians never play chess?", punchline: "They're afraid of the check.", category: "Politics" },
+        { setup: "What's the difference between a politician and a trampoline?", punchline: "You take off your shoes before jumping on a trampoline.", category: "Politics" }
+      ]
+    };
 
+    let currentFilter = 'all';
+    let jokes = [];
     let current = 0;
     let revealed = false;
 
+    function filterCategory(category) {
+      currentFilter = category;
+      current = 0;
+      revealed = false;
+      
+      // Update active button
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Set jokes based on category
+      if (category === 'all') {
+        jokes = allJokes.all;
+      } else {
+        jokes = allJokes[category];
+      }
+      
+      load(current);
+    }
+
     function load(index) {
+      if (jokes.length === 0) return;
       const joke = jokes[index];
       document.getElementById('setup').textContent = joke.setup;
       document.getElementById('punchline').textContent = joke.punchline;
@@ -214,6 +340,8 @@
       load(current);
     }
 
+    // Initialize with all jokes
+    jokes = allJokes.all;
     load(current);
   </script>
 </body>
