@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joke Machine</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #eee;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #e94560, #f5a623);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+
+    .card {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 18px;
+      padding: 40px 36px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .setup {
+      font-size: 1.15rem;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .punchline {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #f5a623;
+      line-height: 1.5;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .punchline.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: #0f3460;
+      margin: 0 auto 20px;
+      border-radius: 2px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .btn-reveal {
+      background: linear-gradient(135deg, #e94560, #c23152);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(233, 69, 96, 0.4);
+    }
+
+    .btn-reveal:hover {
+      box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+    }
+
+    .btn-next {
+      background: linear-gradient(135deg, #0f3460, #1a4a7a);
+      color: #aac;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-next:hover {
+      background: linear-gradient(135deg, #1a4a7a, #255a8a);
+      color: #fff;
+    }
+
+    .counter {
+      position: absolute;
+      top: 16px;
+      right: 22px;
+      font-size: 0.78rem;
+      color: #444;
+    }
+
+    .category-tag {
+      display: inline-block;
+      background: #0f3460;
+      color: #7ab;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Joke Machine</h1>
+  <p class="subtitle">A fresh joke, on demand</p>
+
+  <div class="card">
+    <span class="counter" id="counter">1 / 10</span>
+    <span class="category-tag" id="categoryTag">General</span>
+    <p class="setup" id="setup">Why don't scientists trust atoms?</p>
+    <div class="divider"></div>
+    <p class="punchline" id="punchline">Because they make up everything!</p>
+    <div class="btn-row">
+      <button class="btn-reveal" id="revealBtn" onclick="togglePunchline()">Reveal</button>
+      <button class="btn-next" onclick="nextJoke()">Next Joke</button>
+    </div>
+  </div>
+
+  <script>
+    const jokes = [
+      { setup: "Why don't scientists trust atoms?", punchline: "Because they make up everything!", category: "Science" },
+      { setup: "I told my wife she was drawing her eyebrows too high.", punchline: "She looked surprised.", category: "Classic" },
+      { setup: "What do you call a fake noodle?", punchline: "An impasta.", category: "Food" },
+      { setup: "Why did the scarecrow win an award?", punchline: "He was outstanding in his field.", category: "Classic" },
+      { setup: "I used to hate facial hair, but then it grew on me.", punchline: "Literally.", category: "Classic" },
+      { setup: "What do you call a bear with no teeth?", punchline: "A gummy bear.", category: "Animals" },
+      { setup: "Why do programmers prefer dark mode?", punchline: "Because light attracts bugs.", category: "Tech" },
+      { setup: "What did the ocean say to the beach?", punchline: "Nothing, it just waved.", category: "Nature" },
+      { setup: "Why don't eggs tell jokes?", punchline: "They'd crack each other up.", category: "Food" },
+      { setup: "I'm reading a book about anti-gravity.", punchline: "It's impossible to put down.", category: "Science" }
+    ];
+
+    let current = 0;
+    let revealed = false;
+
+    function load(index) {
+      const joke = jokes[index];
+      document.getElementById('setup').textContent = joke.setup;
+      document.getElementById('punchline').textContent = joke.punchline;
+      document.getElementById('categoryTag').textContent = joke.category;
+      document.getElementById('counter').textContent = (index + 1) + ' / ' + jokes.length;
+      revealed = false;
+      document.getElementById('punchline').classList.remove('visible');
+      document.getElementById('revealBtn').textContent = 'Reveal';
+    }
+
+    function togglePunchline() {
+      revealed = !revealed;
+      document.getElementById('punchline').classList.toggle('visible', revealed);
+      document.getElementById('revealBtn').textContent = revealed ? 'Hide' : 'Reveal';
+    }
+
+    function nextJoke() {
+      current = (current + 1) % jokes.length;
+      load(current);
+    }
+
+    load(current);
+  </script>
+</body>
+</html>
